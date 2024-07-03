@@ -49,6 +49,39 @@
       a {
         color: rgb(216, 137, 106);
       }
+      .weather-app-data {
+        display: flex;
+        justify-content: space-between;
+      }
+      .weather-app-city {
+        margin: 0;
+        font-size: 38px;
+        line-height: 48px;
+      }
+      .weather-app-details {
+        font-size: 16px;
+        line-height: 20px;
+      }
+      .weather-app-details strong {
+        color: rgb(226, 131, 210);
+      }
+
+      .weather-app-temperature-container {
+        display: flex;
+        margin-left: 10px;
+      }
+      .weather-app-value {
+        font-size: 48px;
+        font-weight: bold;
+      }
+      .weather-app-icon {
+        font-size: 36px;
+        margin-top: 10px;
+      }
+      .weather-app-unit {
+        margin-top: 8px;
+        font-size: 18px;
+      }
     </style>
   </head>
   <body>
@@ -65,15 +98,21 @@
         </form>
       </header>
       <main>
-        <div>
-          <h1>Sasolburg</h1>
-          <p>
-            Wednesday 10:15,Sunny
-            <br />
-            Humidity:60%, wind:2.1 km/h
-          </p>
+        <div class="weather-app-data">
+          <div>
+            <h1 class="weather-app-city">Sasolburg</h1>
+            <p class="weather-app-details">
+              Wednesday 10:15,Sunny
+              <br />
+              Humidity:<strong>60%</strong>, wind:<strong>2.1 km/h</strong>
+            </p>
+          </div>
+          <div class="weather-app-temperature-container">
+            <div class="weather-app-icon">🌤️</div>
+            <div class="weather-app-value">12</div>
+            <div class="weather-app-unit">°C</div>
+          </div>
         </div>
-        <div>🌤️ 12°C</div>
       </main>
       <footer>
         This project was coded by
