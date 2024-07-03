@@ -87,12 +87,13 @@
   <body>
     <div class="weather-app">
       <header>
-        <form class="search-form">
+        <form class="search-form" id="search-form">
           <input
             type="Search"
             placeholder="Enter a city"
             required
             class="search-form-input"
+            id="search-form-input"
           />
           <input type="Submit" value="Search" class="search-form-button" />
         </form>
@@ -100,7 +101,7 @@
       <main>
         <div class="weather-app-data">
           <div>
-            <h1 class="weather-app-city">Sasolburg</h1>
+            <h1 class="weather-app-city" id="city">Sasolburg</h1>
             <p class="weather-app-details">
               Wednesday 10:15,Sunny
               <br />
@@ -132,4 +133,15 @@
       </footer>
     </div>
   </body>
+  <script>
+    function handleSearchSubmit(event) {
+      event.preventDefault();
+      let searchInput = document.querySelector("#search-form-input");
+      let cityElement = document.querySelector("#city");
+      cityElement.innerHTML = searchInput.value;
+    }
+
+    let searchFormElement = document.querySelector("#search-form");
+    searchFormElement.addEventListener("submit", handleSearchSubmit);
+  </script>
 </html>
