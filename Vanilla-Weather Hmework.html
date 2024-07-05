@@ -1,122 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My weather application</title>
-    <style>
-      body {
-        background-color: beige;
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
-      }
-      .weather-app {
-        background: white;
-        max-width: 600px;
-        margin: 45px auto;
-        padding: 30px;
-        box-shadow: 0 30px 50px rgba(65, 50, 100, 0.08);
-        border-radius: 60px;
-      }
-      .search-form-input {
-        background: beige;
-        border: none;
-        border-radius: 6px;
-        width: 80%;
-        padding: 15px 20px;
-        font-size: 16px;
-      }
-      .search-form-button {
-        background: rgb(216, 137, 106);
-        padding: 15px 20px;
-        border: none;
-        border-radius: 6px;
-        color: white;
-        margin-left: 5px;
-        font-size: 16px;
-      }
-      header {
-        border-bottom: 1px solid beige;
-        padding: 0 0 30px 0;
-      }
-
-      footer {
-        border-top: 1px solid beige;
-        padding: 30px 0 0 0;
-        text-align: center;
-        font-size: 17px;
-        color: black;
-      }
-      a {
-        color: rgb(216, 137, 106);
-      }
-      .weather-app-data {
-        display: flex;
-        justify-content: space-between;
-      }
-      .weather-app-city {
-        margin: 0;
-        font-size: 38px;
-        line-height: 48px;
-      }
-      .weather-app-details {
-        font-size: 16px;
-        line-height: 20px;
-      }
-      .weather-app-details strong {
-        color: rgb(226, 131, 210);
-      }
-
-      .weather-app-temperature-container {
-        display: flex;
-        margin-left: 10px;
-      }
-      .weather-app-value {
-        font-size: 48px;
-        font-weight: bold;
-      }
-      .weather-app-icon {
-        font-size: 36px;
-        margin-top: 10px;
-      }
-      .weather-app-unit {
-        margin-top: 8px;
-        font-size: 18px;
-      }
-    </style>
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Weather App</title>
+</head>
+<body>
   <body>
     <div class="weather-app">
       <header>
         <form class="search-form" id="search-form">
           <input
-            type="Search"
-            placeholder="Enter a city"
+            type="search"
+            placeholder="Enter a city.."
             required
-            class="search-form-input"
             id="search-form-input"
+            class="search-form-input"
           />
-          <input type="Submit" value="Search" class="search-form-button" />
+          <input type="submit" value="Search" class="search-form-button" />
         </form>
       </header>
       <main>
         <div class="weather-app-data">
           <div>
-            <h1 class="weather-app-city" id="city">Sasolburg</h1>
+            <h1 class="weather-app-city" id="city"></h1>
             <p class="weather-app-details">
-              Wednesday 10:15,Sunny
+              <span id="time"></span>,
+              <span id="description"></span>
               <br />
-              Humidity:<strong>60%</strong>, wind:<strong>2.1 km/h</strong>
+              Humidity: <strong id="humidity"></strong>, Wind:
+              <strong id="wind-speed"></strong>
             </p>
           </div>
           <div class="weather-app-temperature-container">
-            <div class="weather-app-icon">🌤️</div>
-            <div class="weather-app-value" id="temperature">12</div>
+            <div id="icon"></div>
+            <div class="weather-app-temperature" id="temperature"></div>
             <div class="weather-app-unit">°C</div>
           </div>
         </div>
       </main>
-      <footer>
-        This project was coded by
+<footer>
+  This project was coded by
         <a href="https://github.com/Boitu2005" target="_blank"
           >Boitumelo Molipa</a
         >
@@ -130,35 +54,67 @@
           target="_blank"
           >hosted on Netlify</a
         >
-      </footer>
-    </div>
-  </body>
-  <script>
-    function refreshWeather(response) {
-      let temperatureElement = document.querySelector("#temperature");
-      let temperature = response.data.temperature.current;
-      let cityElement = document.querySelector("#city");
+</footer>
+     
+</body>
+<script>
+  function refreshWeather(response) {
+  let temperatureElement = document.querySelector("#temperature");
+  let temperature = response.data.temperature.current;
+  let cityElement = document.querySelector("#city");
+  let descriptionElement = document.querySelector("#description");
+  let humidityElement = document.querySelector("#humidity");
+  let windSpeedElement = document.querySelector("#wind-speed");
+  let timeElement = document.querySelector("#time");
+  let date = new Date(response.data.time * 1000);
+  let iconElement = document.querySelector("#icon");
 
-      cityElement.innerHTML = response.data.city;
-      temperatureElement.innerHTML = Math.round(temperature);
-    }
+  cityElement.innerHTML = response.data.city;
+  timeElement.innerHTML = formatDate(date);
+  descriptionElement.innerHTML = response.data.condition.description;
+  humidityElement.innerHTML = `${response.data.temperature.humidity}%`;
+  windSpeedElement.innerHTML = `${response.data.wind.speed}km/h`;
+  temperatureElement.innerHTML = Math.round(temperature);
+  iconElement.innerHTML = `<img src="${response.data.condition.icon_url}" class="weather-app-icon" />`;
+}
 
-    function searchCity(city) {
-      let apiKey = "b2a5adcct04b33178913oc335f405433";
-      let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}`;
-      axios.get(apiUrl).then(refreshWeather);
-    }
+function formatDate(date) {
+  let minutes = date.getMinutes();
+  let hours = date.getHours();
+  let days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  let day = days[date.getDay()];
 
-    function handleSearchSubmit(event) {
-      event.preventDefault();
-      let searchInput = document.querySelector("#search-form-input");
+  if (minutes < 10) {
+    minutes = `0${minutes}`;
+  }
 
-      searchCity(searchInput.value);
-    }
+  return `${day} ${hours}:${minutes}`;
+}
 
-    let searchFormElement = document.querySelector("#search-form");
-    searchFormElement.addEventListener("submit", handleSearchSubmit);
+function searchCity(city) {
+  let apiKey = "b2a5adcct04b33178913oc335f405433";
+  let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}`;
+  axios.get(apiUrl).then(refreshWeather);
+}
 
-    searchCity("Sasolburg");
-  </script>
+function handleSearchSubmit(event) {
+  event.preventDefault();
+  let searchInput = document.querySelector("#search-form-input");
+
+  searchCity(searchInput.value);
+}
+
+let searchFormElement = document.querySelector("#search-form");
+searchFormElement.addEventListener("submit", handleSearchSubmit);
+
+searchCity("Paris");
+</script>
 </html>
