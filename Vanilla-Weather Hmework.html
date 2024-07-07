@@ -3,46 +3,50 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>My weather application</title>
     <style>
       body {
-        background-color: #f9f7fe;
-        font-family: "Roboto", sans-serif;
-      }
-      a {
-        color: #885df1;
+        background-color: beige;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
       }
       .weather-app {
         background: white;
         max-width: 600px;
         margin: 45px auto;
-        box-shadow: 0 30px 50px rgba(65, 50, 100, 0.08);
-        border-radius: 16px;
         padding: 30px;
-      }
-      header {
-        border-bottom: 1px solid #f9f7fe;
-        padding: 0 0 30px 0;
+        box-shadow: 0 30px 50px rgba(65, 50, 100, 0.08);
+        border-radius: 60px;
       }
       .search-form-input {
-        background-color: #f9f7fe;
+        background: beige;
         border: none;
         border-radius: 6px;
         width: 80%;
-        font-size: 16px;
         padding: 15px 20px;
+        font-size: 16px;
       }
       .search-form-button {
-        background: #885df1;
-        padding: 15px 30px;
+        background: rgb(216, 137, 106);
+        padding: 15px 20px;
         border: none;
-        font-size: 16px;
-        margin-left: 5px;
         border-radius: 6px;
         color: white;
+        margin-left: 5px;
+        font-size: 16px;
       }
-      main {
-        padding: 30px 0;
+      header {
+        border-bottom: 1px solid beige;
+        padding: 0 0 30px 0;
+      }
+      footer {
+        border-top: 1px solid beige;
+        padding: 30px 0 0 0;
+        text-align: center;
+        font-size: 17px;
+        color: black;
+      }
+      a {
+        color: rgb(216, 137, 106);
       }
       .weather-app-data {
         display: flex;
@@ -55,30 +59,26 @@
       }
       .weather-app-details {
         font-size: 16px;
-        color: rgba(39, 33, 66, 0.4);
-        line-height: 24px;
-        font-weight: 500;
+        line-height: 20px;
       }
       .weather-app-details strong {
-        color: #f65282;
+        color: brown;
       }
       .weather-app-temperature-container {
         display: flex;
+        margin-left: 10px;
       }
-
-      .weather-app-icon {
-        width: 88px;
-        height: 88px;
-      }
-
-      .weather-app-temperature {
-        font-size: 88px;
+      .weather-app-value {
+        font-size: 48px;
         font-weight: bold;
       }
-
-      .weatehr-app-unit {
-        margin-top: 6px;
-        font-size: 28px;
+      .weather-app-icon {
+        font-size: 36px;
+        margin-top: 10px;
+      }
+      .weather-app-unit {
+        margin-top: 8px;
+        font-size: 18px;
       }
     </style>
   </head>
@@ -87,31 +87,34 @@
       <header>
         <form class="search-form" id="search-form">
           <input
-            type="search"
-            placeholder="Enter a city.."
+            type="Search"
+            placeholder="Enter a city"
             required
-            id="search-form-input"
             class="search-form-input"
+            id="search-form-input"
           />
-          <input type="submit" value="Search" class="search-form-button" />
+          <input type="Submit" value="Search" class="search-form-button" />
         </form>
       </header>
       <main>
         <div class="weather-app-data">
           <div>
-            <h1 class="weather-app-city" id="city"></h1>
+            <h1 class="weather-app-city" id="city">Sasolburg</h1>
             <p class="weather-app-details">
-              <span id="time"></span>,
-              <span id="description"></span>
+              Wednesday <span id="time">10:15</span>,<span id="description"
+                >Sunny</span
+              >
               <br />
-              Humidity: <strong id="humidity"></strong>, Wind:
-              <strong id="wind-speed"></strong>
+              Humidity:<strong id="humidity">60%</strong>, wind:<strong
+                id="wind-speed"
+                >2.1 km/h</strong
+              >
             </p>
           </div>
           <div class="weather-app-temperature-container">
-            <div id="icon"></div>
-            <div class="weather-app-temperature" id="temperature"></div>
-            <div class="weatehr-app-unit">°C</div>
+            <div class="weather-app-icon" id="icon">🌤️</div>
+            <div class="weather-app-value" id="temperature">12</div>
+            <div class="weather-app-unit">°C</div>
           </div>
         </div>
       </main>
@@ -167,23 +170,29 @@
         "Saturday",
       ];
       let day = days[date.getDay()];
+
       if (minutes < 10) {
         minutes = `0${minutes}`;
       }
+
       return `${day} ${hours}:${minutes}`;
     }
+
     function searchCity(city) {
-      let apiKey = "b2a5adcct04b33178913oc335f405433";
+      let apiKey = "ff1d418bateaa683bbde85690b070oe3";
       let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}`;
       axios.get(apiUrl).then(refreshWeather);
     }
     function handleSearchSubmit(event) {
       event.preventDefault();
       let searchInput = document.querySelector("#search-form-input");
+
       searchCity(searchInput.value);
     }
+
     let searchFormElement = document.querySelector("#search-form");
     searchFormElement.addEventListener("submit", handleSearchSubmit);
-    searchCity("Paris");
+
+    searchCity("Sasolburg");
   </script>
 </html>
